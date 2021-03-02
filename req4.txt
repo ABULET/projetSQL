@@ -1,0 +1,6 @@
+#En quelle année est sortie le premier film Superman ?
+SELECT startYear
+FROM titles_basics
+WHEN titles_basics.primaryTitle
+LIKE 'Superman'
+AND title_basics.tconst = 1;
