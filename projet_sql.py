@@ -1,23 +1,56 @@
+#Aimé BULET 19/03/2021
 import tkinter
 import os
 import sqlite3
 
-def charger_sql(table):
-    #charge des tables
-    conn = sqlite3.connect("imdb.db")
-    c = conn.cursor()
-    c.execute("select * from table")
-    for row in c:
-        print(row)
-    conn.close()
 
-def lire_requetes(dico,fichier):
-    #importe des requetes et les mets sous forme d'un dictionaire
+def database_connexion(db_file):
+    """
+    créer une connexion à une base de données SQLite spécifiée par le db_file
+    Argulment:
+     db_file:fichier de base de données
+    Renvoi:
+        Objet de connexion ou Aucun
+    """
+    connexion = None
+    try:
+        connexion = sqlite3.connect(db_file)
+    except Error as e:
+        return e
+    return connexion
+
+
+def lire_requetes(fichier):
+    """
+    Importe une et la met sous forme d'une liste
+    Argument:
+        fichier: un fichier.txt contenant une requete sql
+    Renvoi:
+        Liste: une liste
+    """
+    assert type(fichier) == str
+    Liste = []
     with open(fichier,"r") as requete:
         lignes = filin.readlignes()
         for ligne in lignes:
-            dico.append(ligne)
+            Liste.append(ligne)
+    return Liste
+
+
+def ajouter_requetes(dico,fichier):
+    """
+    ajoute la requete d'un fichier dans un dictionnaire
+    Arguments:
+        fichier: un fichier.txt contenant une requete sql
+        dico: un dictionnaire contenant une/des requete(s)(il peut etre vide)
+    Renvoi:
+        dico: un dictionnaire contenant au moins un requete
+    """
+    assert type(dico) == dict
+    dico.append(lire_requetes(fichier))
     return dico
+
+
 
 def afficher_table(table, titre ="", debut = 0, fin = None):
 	"""
@@ -63,3 +96,9 @@ def affichage(texte, titre = "Requêtes tables"):
 	text.insert("1.0", texte)
 	text.pack(side = tkinter.LEFT, expand = True, fill = tkinter.BOTH)
 	root.mainloop()
+
+table = []
+for i in range(3,10):
+    ajouter_requetes(table,"req",i,".txt")
+
+afficher_table(table,"titre",0,7)
