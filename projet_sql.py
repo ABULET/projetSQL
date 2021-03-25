@@ -96,9 +96,3 @@ def affichage(texte, titre = "Requêtes tables"):
 	text.insert("1.0", texte)
 	text.pack(side = tkinter.LEFT, expand = True, fill = tkinter.BOTH)
 	root.mainloop()
-
-table = []
-for i in range(3,10):
-    ajouter_requetes(table,"req",i,".txt")
-
-afficher_table(table,"titre",0,7)
