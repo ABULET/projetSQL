@@ -1,4 +1,4 @@
-#Aimé BULET 19/03/2021
+#Aimé BULET 26/03/2021
 import tkinter
 import os
 import sqlite3
@@ -7,7 +7,7 @@ import sqlite3
 def database_connexion(db_file):
     """
     créer une connexion à une base de données SQLite spécifiée par le db_file
-    Argulment:
+    Argument:
      db_file:fichier de base de données
     Renvoi:
         Objet de connexion ou Aucun
@@ -22,7 +22,7 @@ def database_connexion(db_file):
 
 def lire_requetes(fichier):
     """
-    Importe une et la met sous forme d'une liste
+    Importe une requête et la met dans une liste vide
     Argument:
         fichier: un fichier.txt contenant une requete sql
     Renvoi:
@@ -39,7 +39,7 @@ def lire_requetes(fichier):
 
 def ajouter_requetes(dico,fichier):
     """
-    ajoute la requete d'un fichier dans un dictionnaire
+    ajoute une requête sous forme de liste dans un dictionnaire
     Arguments:
         fichier: un fichier.txt contenant une requete sql
         dico: un dictionnaire contenant une/des requete(s)(il peut etre vide)
@@ -65,7 +65,7 @@ def afficher_table(table, titre ="", debut = 0, fin = None):
 		rien
 	"""
 	if titre != "":
-		titre += "\n\n"
+		titre = titre + "\n\n"
 	#print(titre + texte_table(table, debut, fin))
 	affichage(titre + texte_table(table, debut, fin), titre)
 
@@ -96,3 +96,9 @@ def affichage(texte, titre = "Requêtes tables"):
 	text.insert("1.0", texte)
 	text.pack(side = tkinter.LEFT, expand = True, fill = tkinter.BOTH)
 	root.mainloop()
+
+table = []
+for i in range(3,10):
+    ajouter_requetes(table,"req",i,".txt")
+
+afficher_table(table,"titre",0,7)
