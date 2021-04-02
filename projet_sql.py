@@ -4,22 +4,6 @@ import os
 import sqlite3
 
 
-def database_connexion(db_file):
-    """
-    créer une connexion à une base de données SQLite spécifiée par le db_file
-    Argument:
-     db_file:fichier de base de données
-    Renvoi:
-        Objet de connexion ou Aucun
-    """
-    connexion = None
-    try:
-        connexion = sqlite3.connect(db_file)
-    except Error as e:
-        return e
-    return connexion
-
-
 def lire_requetes(fichier):
     """
     Importe une requête et la met dans une liste vide
