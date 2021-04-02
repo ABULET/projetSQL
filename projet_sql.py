@@ -1,4 +1,3 @@
-#Aimé BULET 26/03/2021
 import tkinter
 import os
 import sqlite3
