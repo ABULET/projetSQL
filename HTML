@@ -1,0 +1,77 @@
+#!"C:\winpython\python-3.8.5.amd64\python.exe"
+import tkinter
+import os
+import sqlite3
+
+
+def database_connexion(db_file):
+    """
+    créer une connexion à une base de données SQLite spécifiée par le db_file
+    Argument:
+     db_file:fichier de base de données
+    Renvoi:
+        Objet de connexion ou Aucun
+    """
+    connexion = None
+    try:
+        connexion = sqlite3.connect(db_file)
+    except Error as e:
+        return e
+    return connexion
+
+conn = database_connexion("data/imdb.db")
+
+
+def lire_requete(fichier):
+    """
+    Importe une requête et la met dans une liste vide
+    Argument:
+        fichier: un fichier.txt contenant une requete sql
+    Renvoi:
+        Liste: une liste
+    """
+    assert type(fichier) == str
+    Liste = []
+    with open(fichier,"r") as requete:
+        lignes = filin.readlignes()
+        for ligne in lignes:
+            Liste.append(ligne)
+    return Liste
+
+
+def ajouter_requete(dico,fichier):
+    """
+    ajoute une requête sous forme de liste dans un dictionnaire
+    Arguments:
+        fichier: un fichier.txt contenant une requete sql
+        dico: un dictionnaire contenant une/des requete(s)(il peut etre vide)
+    Renvoi:
+        dico: un dictionnaire contenant au moins un requete
+    """
+    assert type(dico) == dict
+    dico.append(lire_requete(fichier))
+    return dico
+
+def debuthtml():
+    print("Content-type: text/html")
+    print("\n")
+    print("<html><head>")
+    print("\n")
+    print(" <style> table, th, td {border: 1px solid black;  padding: 5px; border-collapse: collapse;} </style> ")
+    print("</head><body>")
+
+def execute_sql(connexion,sql):
+    cur = connexion.cursor()
+    cur.execute(sql)
+    rows = cur.fetchall()
+    debuthtml()
+    table = "<table>\n"
+    for row in rows:
+        table += "<tr><td>\n"+str(row[0])+"</td></tr>\n"
+    table +="</table>\n"
+    print(table)
+    finhtml()
+
+
+requete = lire_requete(Requetes.txt)
+execute_sql(conn,requete)
