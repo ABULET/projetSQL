@@ -1,4 +1,7 @@
-﻿def creer_grille():
+from time import sleep
+from random import randint
+
+def creer_grille():
 #cré un grille de puissance 4 vide sous la forme d'un tableau
     grille = []
     for k in range(6):
@@ -11,19 +14,6 @@ def afficher_grille(grille):
     for n in range(6):
         print(grille[n])
     print(" ")
-
-
-
-def est_dans(nombre,liste):
-    #renvoie true si le nombre est dans la liste sinon False
-    if len(liste) == 0:
-        return False
-    else:
-        for k in range(len(liste)):
-            if liste(k) == nombre:
-                return True
-        return False
-
 
 
 def ajouter_pion(grille,colonne,num):
@@ -43,25 +33,77 @@ def ajouter_pion(grille,colonne,num):
         return False
 
 
+def IA(grille):
+    #fonction qui retourne un nombre entre 0 et 6 en fonction d'une grille
+    #intelligence actuelle:renvoie des nombres au hazard qui ne correspondent pas à des colonnes remplies
+    remplie = True
+    while remplie == True:
+        n = randint(0,6)
+        if grille[0][n] == 0:
+            remplie = False
+    return n
+
+
+def gagne(grille,num,colonne):
+    #prend en argument une grille est un joueur(le dernier qui a joué) et retoune True si Il a gagné et False sinon
+    #pour l'instant ne peut retourner que false
+    hauteur = 0
+    while grille[hauteur][colonne] == 0:
+        hauteur = hauteur + 1
+    #hauteur = distance par rapport au haut de la grille
+    if hauteur <= 2:
+        print("ok")
+        k = 0
+        for i in range(4):
+            if grille[hauteur+i] ==  num:
+                k = k + 1
+        if k == 4:
+            return True
+
+    print("ok")
+    return False
+
+
 def jouer():
 #permet au joueur num de remplacer le 0 de leur choix par leur nombre l'un après
     num = 1
     grille = creer_grille()
     victoire = False
-    #se répète tant que personne n'as gagné
+
     while victoire == False:
-        grille2 = grille
-        remplie = True
-        print("joueur",num,", c'est à vous")
-        #se répète tant que le numéro qu'as entré le joueur est "mauvais"
-        while remplie == True:
-            colonne = int(input())
-            if colonne >= 0 and colonne <=6:
-                remplie = ajouter_pion(grille,colonne,num)
-            else:
-                print("cette colonne n'existe pas,vous devez choisir un numéro en un numéro entre 0 et 6")
+        #se répète tant que personne n'as gagné
+
+        if num == 1:
+        #si c'est au joueur de jouer
+            remplie = True
+            print("joueur 1, c'est à vous")
+            #se répète tant que le numéro qu'as entré le joueur est "mauvais"
+            while remplie == True:
+                colonne = int(input())
+                if colonne >= 0 and colonne <=6:
+                    remplie = ajouter_pion(grille,colonne,num)
+                else:
+                    print("cette colonne n'existe pas,vous devez choisir un numéro en entre 0 et 6")
+
+        elif num == 2:
+        #si c'est à l'IA de jouer
+            colonne = IA(grille)
+            ajouter_pion(grille,colonne,num)
+            sleep(2)
+
+        victoire = gagne(grille,num,colonne)
         num = num % 2 + 1
         afficher_grille(grille)
+    #quand la partie est finie
+    if num == 1:
+        #si le num 2 a gagné, c'est que le num actuel est 1
+        print("tu as perdu")
+    else:
+        #et inversement
+        print("tu as gagné")
 
-
-jouer()
+grille = creer_grille()
+for i in range(4):
+    ajouter_pion(grille,3,1)
+afficher_grille(grille)
+gagne(grille,3,1)
