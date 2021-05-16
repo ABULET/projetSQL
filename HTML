@@ -30,13 +30,9 @@ def lire_requete(fichier):
     Renvoi:
         Liste: une liste
     """
-    assert type(fichier) == str
-    Liste = []
-    with open(fichier,"r") as requete:
-        lignes = filin.readlignes()
-        for ligne in lignes:
-            Liste.append(ligne)
-    return Liste
+    with open(fichier,"r") as fichier:
+        lignes = fichier.readlines()   #ouvre le fichier pour le lire et renvoie les lignes du fichier
+    return lignes
 
 
 def ajouter_requete(dico,fichier):
@@ -44,13 +40,11 @@ def ajouter_requete(dico,fichier):
     ajoute une requête sous forme de liste dans un dictionnaire
     Arguments:
         fichier: un fichier.txt contenant une requete sql
-        dico: un dictionnaire contenant une/des requete(s)(il peut etre vide)
+        dico: un dictionnaire contenant une/des requete(s)(il peut être vide)
     Renvoi:
-        dico: un dictionnaire contenant au moins un requete
+        dico: un dictionnaire contenant au moins un requête
     """
-    assert type(dico) == dict
-    dico.append(lire_requete(fichier))
-    return dico
+    dico.append(lire_requete(fichier))    #ajoute la requete du fichier dans dico
 
 def debuthtml():
     #début du code html
@@ -58,7 +52,7 @@ def debuthtml():
     print("\n")
     print("<html><head>")
     print("\n")
-    print(" <style> table, th, td {border: 1px solid black;  padding: 5px; border-collapse: collapse;} </style> ")
+    print(" <style> table, th, td {border: 2px solid black;  padding: 5px; border-collapse: collapse;} </style> ")
     print("</head><body>")
 
 def execute_sql(connexion,sql):
