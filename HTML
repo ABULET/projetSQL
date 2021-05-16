@@ -30,6 +30,7 @@ def lire_requete(fichier):
     Renvoi:
         Liste: une liste
     """
+    assert type(fichier) == str
     with open(fichier,"r") as fichier:
         lignes = fichier.readlines()   #ouvre le fichier pour le lire et renvoie les lignes du fichier
     return lignes
@@ -44,6 +45,8 @@ def ajouter_requete(dico,fichier):
     Renvoi:
         dico: un dictionnaire contenant au moins un requête
     """
+    assert type(dico) == list
+    assert type(fichier) == str
     dico.append(lire_requete(fichier))    #ajoute la requete du fichier dans dico
 
 def debuthtml():
