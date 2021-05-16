@@ -2,8 +2,7 @@ import tkinter
 import os
 import sqlite3
 
-
-def lire_requetes(fichier):
+def lire_requete(fichier):
     """
     Importe une requête et la met dans une liste vide
     Argument:
@@ -11,27 +10,21 @@ def lire_requetes(fichier):
     Renvoi:
         Liste: une liste
     """
-    assert type(fichier) == str
-    Liste = []
-    with open(fichier,"r") as requete:
-        lignes = filin.readlignes()
-        for ligne in lignes:
-            Liste.append(ligne)
-    return Liste
+    with open(fichier,"r") as fichier:
+        lignes = fichier.readlines()
+    return lignes
 
 
-def ajouter_requetes(dico,fichier):
+def ajouter_requete(dico,fichier):
     """
     ajoute une requête sous forme de liste dans un dictionnaire
     Arguments:
         fichier: un fichier.txt contenant une requete sql
-        dico: un dictionnaire contenant une/des requete(s)(il peut etre vide)
+        dico: un dictionnaire contenant une/des requete(s)(il peut être vide)
     Renvoi:
-        dico: un dictionnaire contenant au moins un requete
+        dico: un dictionnaire contenant au moins un requête
     """
-    assert type(dico) == dict
-    dico.append(lire_requetes(fichier))
-    return dico
+    dico.append(lire_requete(fichier))
 
 
 
