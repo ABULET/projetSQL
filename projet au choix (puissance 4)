@@ -1,6 +1,7 @@
 from time import sleep
 from random import randint
 
+
 def creer_grille():
 #cré un grille de puissance 4 vide sous la forme d'un tableau
     grille = []
@@ -9,11 +10,13 @@ def creer_grille():
     return grille
 
 
+
 def afficher_grille(grille):
 #affiche la grille de puissance 4 de manière lisible
     for n in range(6):
         print(grille[n])
     print(" ")
+
 
 
 def ajouter_pion(grille,colonne,num):
@@ -33,6 +36,7 @@ def ajouter_pion(grille,colonne,num):
         return False
 
 
+
 def IA(grille):
     #fonction qui retourne un nombre entre 0 et 6 en fonction d'une grille
     #intelligence actuelle:renvoie des nombres au hazard qui ne correspondent pas à des colonnes remplies
@@ -44,24 +48,107 @@ def IA(grille):
     return n
 
 
-def gagne(grille,num,colonne):
-    #prend en argument une grille est un joueur(le dernier qui a joué) et retoune True si Il a gagné et False sinon
-    #pour l'instant ne peut retourner que false
-    hauteur = 0
-    while grille[hauteur][colonne] == 0:
-        hauteur = hauteur + 1
-    #hauteur = distance par rapport au haut de la grille
-    if hauteur <= 2:
-        print("ok")
-        k = 0
-        for i in range(4):
-            if grille[hauteur+i] ==  num:
-                k = k + 1
-        if k == 4:
-            return True
 
-    print("ok")
+def gagnetest(grille,colonne,num):
+    #prend en argument une grille est un joueur(le dernier qui a joué) et retoune True si Il a gagné et False sinon
+    hauteur = 0
+    while grille[hauteur][colonne] == 0 and hauteur <= 5:
+        hauteur = hauteur + 1
+    #grille[hauteur][colonne] est actuellement la position du dernier pion posé
+
+    if hauteur <= 2:
+    #test vers le bas
+        if grille[hauteur+1][colonne] == num:
+            if grille[hauteur+2][colonne] == num:
+                if grille[hauteur+3][colonne] == num:
+                    return True
+
+    if colonne >= 3:
+    #test vers la gauche.
+        if grille[hauteur][colonne-1] == num:
+            if grille[hauteur][colonne-2] == num:
+                if grille[hauteur][colonne-3] == num:
+                    return True
+
+    if colonne <= 3:
+    #test vers la droite
+        if grille[hauteur][colonne+1] == num:
+            if grille[hauteur][colonne+2] == num:
+                if grille[hauteur][colonne+3] == num:
+                    return True
+
+    if colonne >= 2 and colonne <= 5:
+        #test 2 à gauche et 1 à droite
+        if grille[hauteur][colonne+1] == num:
+            if grille[hauteur][colonne-1] == num:
+                if grille[hauteur][colonne-2] == num:
+                    return True
+
+    if colonne >= 1 and colonne <= 4:
+    #test 1 à gauche et 2 à droite
+        if grille[hauteur][colonne-1] == num:
+            if grille[hauteur][colonne+1] == num:
+                if grille[hauteur][colonne+2] == num:
+                    return True
+
+    if colonne >= 3 and hauteur <= 2:
+    #test diagonal bas-gauche.
+        if grille[hauteur+1][colonne-1] == num:
+            if grille[hauteur+2][colonne-2] == num:
+                if grille[hauteur+3][colonne-3] == num:
+                    return True
+
+    if colonne <= 3 and hauteur <= 2:
+    #test diagonal bas-droite.
+        if grille[hauteur+1][colonne+1] == num:
+            if grille[hauteur+2][colonne+2] == num:
+                if grille[hauteur+3][colonne+3] == num:
+                    return True
+
+    if colonne >= 3 and hauteur >= 3:
+    #test diagonal haut-gauche
+        if grille[hauteur-1][colonne-1] == num:
+            if grille[hauteur-2][colonne-2] == num:
+                if grille[hauteur-3][colonne-3] == num:
+                    return True
+
+    if colonne <= 3 and hauteur >= 3:
+    #test diagonal haut-droite
+        if grille[hauteur-1][colonne+1] == num:
+            if grille[hauteur-2][colonne+2] == num:
+                if grille[hauteur-3][colonne+3] == num:
+                    return True
+
+    if colonne >= 2 and colonne <= 5 and hauteur >= 1 and hauteur <= 3:
+    #test 2 en bas à gauche et 1 en haut à droite
+        if grille[hauteur-1][colonne+1] == num:
+            if grille[hauteur+1][colonne-1] == num:
+                if grille[hauteur+2][colonne-2] == num:
+                    return True
+
+    if colonne >= 1 and colonne <= 4 and hauteur >= 2 and hauteur <= 4:
+    #test 1 en bas à gauche et 2 en haut à droite
+        if grille[hauteur+1][colonne-1] == num:
+            if grille[hauteur-1][colonne+1] == num:
+                if grille[hauteur-2][colonne+2] == num:
+                    return True
+
+    if colonne >= 2 and colonne <= 5 and hauteur >= 2 and hauteur <= 4:
+    #test 2 en haut à gauche et 1 en bas à droite
+        if grille[hauteur+1][colonne+1] == num:
+            if grille[hauteur-1][colonne-1] == num:
+                if grille[hauteur-2][colonne-2] == num:
+                    return True
+
+    if colonne >= 1 and colonne <= 4 and hauteur >= 1 and hauteur <= 3:
+    #test 1 en haut à gauche et 2 en bas à droite
+        if grille[hauteur-1][colonne-1] == num:
+            if grille[hauteur+1][colonne+1] == num:
+                if grille[hauteur+2][colonne+2] == num:
+                    return True
+
     return False
+
 
 
 def jouer():
@@ -91,7 +178,7 @@ def jouer():
             ajouter_pion(grille,colonne,num)
             sleep(2)
 
-        victoire = gagne(grille,num,colonne)
+        victoire = gagnetest(grille,colonne,num)
         num = num % 2 + 1
         afficher_grille(grille)
     #quand la partie est finie
@@ -102,8 +189,4 @@ def jouer():
         #et inversement
         print("tu as gagné")
 
-grille = creer_grille()
-for i in range(4):
-    ajouter_pion(grille,3,1)
-afficher_grille(grille)
-gagne(grille,3,1)
+jouer()
