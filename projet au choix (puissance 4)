@@ -23,10 +23,12 @@ def ajouter_pion(grille,colonne,num):
 #remplace le 0 le plus bas de la colonne par le nombre num
 #une colonne est remplie quand elle ne contient plus aucun 0(donc lorsque le plus haut élement de la colonne est positif)
 #renvoie true si la colonne est remplie et false si la colonne a encore de la place
+    
     #si la colonne est complétement remplie
     if grille[0][colonne] != 0:
         print("cette colonne est déja remplie")
         return True
+    
     #si il reste des places dans la colonne
     else:
         n = 5
@@ -38,8 +40,8 @@ def ajouter_pion(grille,colonne,num):
 
 
 def IA(grille):
-    #fonction qui retourne un nombre entre 0 et 6 en fonction d'une grille
-    #intelligence actuelle:renvoie des nombres au hazard qui ne correspondent pas à des colonnes remplies
+#fonction qui retourne un nombre entre 0 et 6 en fonction d'une grille
+#intelligence actuelle:renvoie des nombres au hazard qui ne correspondent pas à des colonnes remplies
     remplie = True
     while remplie == True:
         n = randint(0,6)
@@ -50,7 +52,7 @@ def IA(grille):
 
 
 def gagnetest(grille,colonne,num):
-    #prend en argument une grille est un joueur(le dernier qui a joué) et retoune True si Il a gagné et False sinon
+#prend en argument une grille est un joueur(le dernier qui a joué) et retoune True si Il a gagné et False sinon
     hauteur = 0
     while grille[hauteur][colonne] == 0 and hauteur <= 5:
         hauteur = hauteur + 1
