@@ -293,7 +293,7 @@ def jouer():
             colonne = mode2(grille,joueur)
 
         victoire = test_victoire(grille,colonne)         #regarde si personne n'a gagné à chaque tour
-        joueur = joueur % 2 + 1                          #le numéro paase de 1 à 2 ou de 2 à 1
+        joueur = joueur % 2 + 1                          #le numéro passe de 1 à 2 ou de 2 à 1
         afficher_grille(grille)                          #affiche la grille pour montré l'avanceùent de la partie
         sleep(1)                                         #attend 1 seconde pour qu'il y ai un petit temps entre chaques tours
 
