@@ -3,192 +3,284 @@ from random import randint
 
 
 def creer_grille():
-#cré un grille de puissance 4 vide sous la forme d'un tableau
-    grille = []
+#cré un grille de puissance 4 vide sous la forme d'un tableau contenant 6 listes
+#chacunes des listes contiennent 7 espaces.
+#les listes représentent les lignes du tableau de puissance 4 et les espaces représentent les colonnes
+    grille = []                    #création tableau vide
     for k in range(6):
-        grille.append([0]*7)
-    return grille
+        grille.append([" "]*7)     #rajoute une liste contenant 7 espaces au tableau 6 fois d'affilé
+    return grille                  #renvoie le tableau fini
 
 
 
 def afficher_grille(grille):
-#affiche la grille de puissance 4 de manière lisible
-    for n in range(6):
-        print(grille[n])
-    print(" ")
+#affiche la grille de puissance 4 de manière lisible (une liste par ligne)
+#attention, la liste 0 est la liste affichée en dernier et donc la ligne la plus haute de la grille      grille[0] ->  [" "," "," "," "," "," "," "]
+    for n in range(6):        #                                                                                        [" "," "," "," "," "," "," "]
+        print(grille[n])      #affiche les lignes les unes après les autres                                            [" "," "," "," "," "," "," "]
+    print(" ")                #                                                                                        [" "," "," "," "," "," "," "]
+                              #                                                                                        [" "," "," "," "," "," "," "]
+                              #                                                                          grille[5] ->  [" "," "," "," "," "," "," "]
 
 
-
-def ajouter_pion(grille,colonne,num):
-#remplace le 0 le plus bas de la colonne par le nombre num
+def ajouter_pion(grille,colonne,joueur):
+#remplace le 0 le plus bas de la colonne par un signe en fonction du joueur
 #une colonne est remplie quand elle ne contient plus aucun 0(donc lorsque le plus haut élement de la colonne est positif)
 #renvoie true si la colonne est remplie et false si la colonne a encore de la place
-    
-    #si la colonne est complétement remplie
-    if grille[0][colonne] != 0:
-        print("cette colonne est déja remplie")
-        return True
-    
-    #si il reste des places dans la colonne
+
+    if grille[0][colonne] != " ":
+    #si l'élément le plus haut de la colonne n'est pas un espace (la colonne est complétement remplie)
+        print(" ")
+        print("Cette colonne est déja remplie.")                 #message montrant que la colonne est remplie dans la console
+        return True                                              #renvoie True pour indiquer que la colonne est bien remplie
+
     else:
-        n = 5
-        while grille[n][colonne] != 0:
-            n = n-1
-        grille[n][colonne] = num
-        return False
+    #sinon (il reste des places dans la colonne)
+    #regarde tout les emplacement de la colonne en partant du bas: dès qu'un emplacement est vide (espace), remplace ce vide par un signe (x ou o selon le joueur)
+        hauteur = 5                                              #initialisation de la variable hauteur. Pour l'instant, grille[hauteur] est la ligne la plus basse de la grille
+        while grille[hauteur][colonne] != " " and hauteur >= 0:  #tant que grille[hauteur][colonne] est remplie, hauteur diminue de 1. S'arrête quoi qu'il arrive avant qu'hauteur n'est plus dans grille
+            hauteur = hauteur - 1                                #attention, cela veut dire que les lignes observées sont de plus en plus hautes.
+        if joueur == 1:
+            grille[hauteur][colonne] = "x"
+        else:                                                    #met un signe dans le vide le plus bas de la colonne (x si joueur = 1 et o si joueur = 2)
+            grille[hauteur][colonne] = "o"
+        return False                                             #renvoie False pour indiquer que la colonne n'est pas remplie
 
 
 
 def IA(grille):
 #fonction qui retourne un nombre entre 0 et 6 en fonction d'une grille
 #intelligence actuelle:renvoie des nombres au hazard qui ne correspondent pas à des colonnes remplies
+
+    if grille[5][3] == " ":
+    #joue dans la colonne du milieu si la colonne du milieu est vide
+        return 3
+
+    #sinon joue au hazard
     remplie = True
     while remplie == True:
         n = randint(0,6)
-        if grille[0][n] == 0:
+        if grille[0][n] == " ":
             remplie = False
     return n
 
 
 
-def gagnetest(grille,colonne,num):
-#prend en argument une grille est un joueur(le dernier qui a joué) et retoune True si Il a gagné et False sinon
-    hauteur = 0
-    while grille[hauteur][colonne] == 0 and hauteur <= 5:
-        hauteur = hauteur + 1
-    #grille[hauteur][colonne] est actuellement la position du dernier pion posé
+def test_victoire(grille,colonne):
+#prend en argument une grille, une colonne(celle ou le dernier pion a été posé) est un joueur (qui a joué en dernier) et renvoie True si il a gagné et False sinon
+#fonctionement: cherche le dernier pion posé et test si il fait partie d'un puissance 4 (les test sont différents en fonction de la position du pion)
+
+    #cherche le dernier pion posé
+    hauteur = 0                                                 #initialisation de la variable hauteur, pour l'instant, grille[hauteur] est la ligne la plus haute de la grille
+    while grille[hauteur][colonne] == " " and hauteur <= 5:     #tant que grille[hauteur][colonne] est  vide, hauteur augmente de 1 (donc grille[hauteur] est une ligne de plus en plus basse)
+        hauteur = hauteur + 1                                   #s'arrête quoi qu'il arrive quand grille[hauteur] est la ligne la plus basse de grille (il y a forcément un pion à cet emplacement car colonne représente la dernière colonne où un pion à été posé)
+    pion = grille[hauteur][colonne]                             #grille[hauteur][colonne] est actuellement la position du dernier pion posé. pion est donc le signe du dernier pion posé
+
+    #maintenant, toutes les possibilités de puissance 4 sont testées à partir de grille[hauteur][colonne]
+    #il ne peut pas y avoir de test vers le haut car grille[hauteur][colonne] est le dernier pion posé donc un autre pion ne peut pas être au dessus de lui.
 
     if hauteur <= 2:
-    #test vers le bas
-        if grille[hauteur+1][colonne] == num:
-            if grille[hauteur+2][colonne] == num:
-                if grille[hauteur+3][colonne] == num:
+    #test vers le bas (si les trois pions les plus proches en bas du dernier pion posés sont égaux au dernier pion posé)
+        if grille[hauteur+1][colonne] == pion:
+            if grille[hauteur+2][colonne] == pion:
+                if grille[hauteur+3][colonne] == pion:
                     return True
 
     if colonne >= 3:
-    #test vers la gauche.
-        if grille[hauteur][colonne-1] == num:
-            if grille[hauteur][colonne-2] == num:
-                if grille[hauteur][colonne-3] == num:
+    #test vers la gauche (si les trois pions les plus proches à gauche du dernier pion posé sont égaux au dernier pion posé.)
+        if grille[hauteur][colonne-1] == pion:
+            if grille[hauteur][colonne-2] == pion:
+                if grille[hauteur][colonne-3] == pion:
                     return True
 
     if colonne <= 3:
-    #test vers la droite
-        if grille[hauteur][colonne+1] == num:
-            if grille[hauteur][colonne+2] == num:
-                if grille[hauteur][colonne+3] == num:
+    #test vers la droite (si les trois pions les plus proches à droite du dernier pion posé sont égaux au dernier pion posé.)
+        if grille[hauteur][colonne+1] == pion:
+            if grille[hauteur][colonne+2] == pion:
+                if grille[hauteur][colonne+3] == pion:
                     return True
 
     if colonne >= 2 and colonne <= 5:
-        #test 2 à gauche et 1 à droite
-        if grille[hauteur][colonne+1] == num:
-            if grille[hauteur][colonne-1] == num:
-                if grille[hauteur][colonne-2] == num:
+    #test 2 à gauche et 1 à droite (si le pion juste à droite du dernier pion posé et les deux pions les plus à gauche du dernier pion posé sont égaux au dernier pion posé)
+        if grille[hauteur][colonne+1] == pion:
+            if grille[hauteur][colonne-1] == pion:
+                if grille[hauteur][colonne-2] == pion:
                     return True
 
     if colonne >= 1 and colonne <= 4:
-    #test 1 à gauche et 2 à droite
-        if grille[hauteur][colonne-1] == num:
-            if grille[hauteur][colonne+1] == num:
-                if grille[hauteur][colonne+2] == num:
+    #test 1 à gauche et 2 à droite (si le pion juste à gauche du dernier pion posé et les deux pions les plus à droite du dernier pion posé sont égaux au dernier pion posé)
+        if grille[hauteur][colonne-1] == pion:
+            if grille[hauteur][colonne+1] == pion:
+                if grille[hauteur][colonne+2] == pion:
                     return True
 
     if colonne >= 3 and hauteur <= 2:
-    #test diagonal bas-gauche.
-        if grille[hauteur+1][colonne-1] == num:
-            if grille[hauteur+2][colonne-2] == num:
-                if grille[hauteur+3][colonne-3] == num:
+    #test diagonal bas-gauche. (etc...)
+        if grille[hauteur+1][colonne-1] == pion:
+            if grille[hauteur+2][colonne-2] == pion:
+                if grille[hauteur+3][colonne-3] == pion:
                     return True
 
     if colonne <= 3 and hauteur <= 2:
     #test diagonal bas-droite.
-        if grille[hauteur+1][colonne+1] == num:
-            if grille[hauteur+2][colonne+2] == num:
-                if grille[hauteur+3][colonne+3] == num:
+        if grille[hauteur+1][colonne+1] == pion:
+            if grille[hauteur+2][colonne+2] == pion:
+                if grille[hauteur+3][colonne+3] == pion:
                     return True
 
     if colonne >= 3 and hauteur >= 3:
     #test diagonal haut-gauche
-        if grille[hauteur-1][colonne-1] == num:
-            if grille[hauteur-2][colonne-2] == num:
-                if grille[hauteur-3][colonne-3] == num:
+        if grille[hauteur-1][colonne-1] == pion:
+            if grille[hauteur-2][colonne-2] == pion:
+                if grille[hauteur-3][colonne-3] == pion:
                     return True
 
     if colonne <= 3 and hauteur >= 3:
     #test diagonal haut-droite
-        if grille[hauteur-1][colonne+1] == num:
-            if grille[hauteur-2][colonne+2] == num:
-                if grille[hauteur-3][colonne+3] == num:
+        if grille[hauteur-1][colonne+1] == pion:
+            if grille[hauteur-2][colonne+2] == pion:
+                if grille[hauteur-3][colonne+3] == pion:
                     return True
 
     if colonne >= 2 and colonne <= 5 and hauteur >= 1 and hauteur <= 3:
     #test 2 en bas à gauche et 1 en haut à droite
-        if grille[hauteur-1][colonne+1] == num:
-            if grille[hauteur+1][colonne-1] == num:
-                if grille[hauteur+2][colonne-2] == num:
+        if grille[hauteur-1][colonne+1] == pion:
+            if grille[hauteur+1][colonne-1] == pion:
+                if grille[hauteur+2][colonne-2] == pion:
                     return True
 
     if colonne >= 1 and colonne <= 4 and hauteur >= 2 and hauteur <= 4:
     #test 1 en bas à gauche et 2 en haut à droite
-        if grille[hauteur+1][colonne-1] == num:
-            if grille[hauteur-1][colonne+1] == num:
-                if grille[hauteur-2][colonne+2] == num:
+        if grille[hauteur+1][colonne-1] == pion:
+            if grille[hauteur-1][colonne+1] == pion:
+                if grille[hauteur-2][colonne+2] == pion:
                     return True
 
     if colonne >= 2 and colonne <= 5 and hauteur >= 2 and hauteur <= 4:
     #test 2 en haut à gauche et 1 en bas à droite
-        if grille[hauteur+1][colonne+1] == num:
-            if grille[hauteur-1][colonne-1] == num:
-                if grille[hauteur-2][colonne-2] == num:
+        if grille[hauteur+1][colonne+1] == pion:
+            if grille[hauteur-1][colonne-1] == pion:
+                if grille[hauteur-2][colonne-2] == pion:
                     return True
 
     if colonne >= 1 and colonne <= 4 and hauteur >= 1 and hauteur <= 3:
     #test 1 en haut à gauche et 2 en bas à droite
-        if grille[hauteur-1][colonne-1] == num:
-            if grille[hauteur+1][colonne+1] == num:
-                if grille[hauteur+2][colonne+2] == num:
+        if grille[hauteur-1][colonne-1] == pion:
+            if grille[hauteur+1][colonne+1] == pion:
+                if grille[hauteur+2][colonne+2] == pion:
                     return True
 
-    return False
+    return False    #si aucun des précédents tests n'a fonctioné (si il n'y a pas de puissance 4), renvoie False
 
+
+
+def choix_mode():
+#fonction qui permet de faire faire choisir au joueur le mode de jeu (joueur contre joueur ou joueur contre IA)
+#renvoie le mode choisi sou formede nombre (1 pour joueur contre joueur et 2 pour joueur contre IA)
+
+    print("Bonjour, ce programme permet de jouer au puissance 4.")
+    print("Pour une meilleure expérience de jeu, il est recommandé d'agrandire la console et de zoomer.")
+    print("Pour choisir le mode joueur contre joueur écrivez 1.")                                              #phrases de début écrites dans la console
+    print("Si vous voulez jouez contre l'intelligence artificielle écrivez 2.")
+    print(" ")
+
+    mode = int(input())                                                         #demande au joueur d'écrire un nombre (1 ou 2)
+    while mode < 1 or mode > 2:
+        print("Ce numéro n'est pas valide, veuillez en écrire un autre.")       #tant que le joueur n'écrit pas un de ces 2 numéros, il est écrit que le numéro n'est pas valide et il doit en écrire un autre
+        print(" ")
+        mode = int(input())
+
+    if mode == 1:
+        print("Vous avez choisi le mode joueur contre joueur.")                 #est écrit dans la console si le mode choisi est le 1 et explique comment jouer
+        print("Chacun votre tour vous devrez écrire un nombre entre 0 et 6 désignant la colonne dans laquelle vous voulez joué.")
+        print("Le numéro 0 correspond à la colonne la plus à gauche et le numéro 6 correspond à la colonne la plus à droite.")
+        print("Bonne partie.")
+    else:
+        print("Vous allez jouez contre l'intelligence artificielle.")           #est écrit dans la console si le mode choisi est le 2
+        print("Lorsque c'est votre tour, vous devez écrire un nombre entre 0 et 6 désignant la colonne dans laquelle vous voulez jouez.")
+        print("Le numéro 0 correspond à la colonne la plus à gauche et le numéro 6 correspond à la colonne la plus à droite.")
+        print("Bonne chance.")
+
+    print(" ")
+    sleep(1)                                                                    #attend une seconde pour laisser au joueur le temps de lire
+    return mode                                                                 #renvoie le numéro de mode pour montré quel est le mode de jeu
+
+
+def mode1(grille,joueur):
+#fonction qui fait dérouler un tour avec le mode joueur contre joueur
+#prend en argument une grille est un numéro de joueur et renvoie un numéro de colonne
+
+    remplie = True                           #considère que la colonne choisie par le joueur est remplis
+    print("Joueur",joueur,"c'est à vous.")   #écrit dans la console à qui est-ce le tour
+
+    while remplie == True:                                 #tant que la colonne choisie par le joueur est remplie
+        colonne = int(input())                             #demande au joueur quel numéro de colonne il choisi
+        if colonne >= 0 and colonne <=6:                   #si la colonne choisie par le joueur existe
+            remplie = ajouter_pion(grille,colonne,joueur)  #si la colonne estn remplie, remplie rest à True, sinon, il devient False et un pion est ajouté dans la colonne selon le numéro du joueur
+        else:                                              #si la colonne par le joueur n'existe pas, remplie reste à true et la boucle while recommence
+            print(" ")                                     #le fait que la colonne choisie n'existe pas s'affiche dans la console
+            print("Cette colonne n'existe pas,vous devez choisir un numéro en entre 0 et 6.")
+
+    return colonne                                         #quand remplie = False, renvoie le numéro de colonne choisie
+
+
+def mode2(grille,joueur):
+#fonction qui fait dérouler un  tour avec le mode joueur contre IA
+#prend en argument un numéro (1 si c'est le joueur et 2 si c'est l'IA) et rencoie un numéro de colonne
+
+    if joueur == 1:
+    #si c'est au joueur de jouer
+        remplie = True
+        print("C'est à vous.")
+        while remplie == True:                 #fonctionne de la même façon que la fonction mode1
+            colonne = int(input())
+            if colonne >= 0 and colonne <=6:
+                remplie = ajouter_pion(grille,colonne,joueur)
+            else:
+                print("Cette colonne n'existe pas,vous devez choisir un numéro en entre 0 et 6.")
+
+    elif joueur == 2:
+    #si c'est à l'IA de jouer
+        colonne = IA(grille)                      #numéro de colonne est choisi par l'IA
+        ajouter_pion(grille,colonne,joueur)       #ajoute le pion de l'IA dans la colonne
+
+    return colonne
 
 
 def jouer():
-#permet au joueur num de remplacer le 0 de leur choix par leur nombre l'un après
-    num = 1
-    grille = creer_grille()
-    victoire = False
+#fonction qui rassemble toute les autres pour faire une partie qui dure tant que personne n'as gagné
+    joueur = 1                      #initialise le numéro de joueur
+    grille = creer_grille()         #cré une grille remplie d'espaces
+    victoire = False                #variables victoire qui permet de savoir quand la partie est finie
+    mode = choix_mode()             #fait choisir le mode de jeu au joueur
 
     while victoire == False:
-        #se répète tant que personne n'as gagné
+    #se répète tant que personne n'as gagné
 
-        if num == 1:
-        #si c'est au joueur de jouer
-            remplie = True
-            print("joueur 1, c'est à vous")
-            #se répète tant que le numéro qu'as entré le joueur est "mauvais"
-            while remplie == True:
-                colonne = int(input())
-                if colonne >= 0 and colonne <=6:
-                    remplie = ajouter_pion(grille,colonne,num)
-                else:
-                    print("cette colonne n'existe pas,vous devez choisir un numéro en entre 0 et 6")
+        if mode == 1:
+        #mode 2 joueurs
+            colonne = mode1(grille,joueur)
 
-        elif num == 2:
-        #si c'est à l'IA de jouer
-            colonne = IA(grille)
-            ajouter_pion(grille,colonne,num)
-            sleep(2)
+        if mode == 2:
+        #mode joueur contre IA
+            colonne = mode2(grille,joueur)
 
-        victoire = gagnetest(grille,colonne,num)
-        num = num % 2 + 1
-        afficher_grille(grille)
+        victoire = test_victoire(grille,colonne)         #regarde si personne n'a gagné à chaque tour
+        joueur = joueur % 2 + 1                          #le numéro paase de 1 à 2 ou de 2 à 1
+        afficher_grille(grille)                          #affiche la grille pour montré l'avanceùent de la partie
+        sleep(1)                                         #attend 1 seconde pour qu'il y ai un petit temps entre chaques tours
+
     #quand la partie est finie
-    if num == 1:
-        #si le num 2 a gagné, c'est que le num actuel est 1
-        print("tu as perdu")
-    else:
+    if mode == 1:
+    #si c'est le mode, joueur contre joueur, annonce qui a gagné
+        print("Le joueur",joueur%2+1,"a gagné!")     #joueur est actuellent le numéro du joueur qui allait jouer (donc du joueur qui a perdu)
+    if mode == 2:
+    #si c'est le mode joueur contre IA, annonce si le joueur a gagné ou si il a perdu
+        if joueur == 1:
+        #si le joueur 2 a gagné, c'est que le joueur actuel est 1
+            print("Tu as perdu!")
+        else:
         #et inversement
-        print("tu as gagné")
+            print("Tu as gagné!")
 
 jouer()
