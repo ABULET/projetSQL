@@ -1,3 +1,5 @@
+#BULET Aimé puissance 4
+
 from time import sleep
 from random import randint
 
@@ -48,6 +50,17 @@ def ajouter_pion(grille,colonne,joueur):
 
 
 
+def recopier(grille):
+    #prend en paramètre une grille et renvoie une autre grille identique
+    #la grille doit contenir 6 listes étant chacunes composées de 7 signes
+    grille2 = creer_grille()                                    #cré une grille vide
+    for ligne in range(6):
+        for colonne in range(7):
+            grille2[ligne][colonne] = grille[ligne][colonne]    #remplace tous les espace de grille2 par les valeures grille 1 ayants la même position
+    return grille2                                              #renvoie la grille2 (identique à la grille)
+
+
+
 def IA(grille):
 #fonction qui retourne un nombre entre 0 et 6 en fonction d'une grille
 #intelligence actuelle:renvoie des nombres au hazard qui ne correspondent pas à des colonnes remplies
@@ -56,13 +69,27 @@ def IA(grille):
     #joue dans la colonne du milieu si la colonne du milieu est vide
         return 3
 
-    #sinon joue au hazard
+    else:
+    #sinon teste si elle peut gagner en 1 coup puis si elle peut perdre en 1 coup
+        for joueur in range(2,0,-1):                  #boucle qui permet de tester toutes les possiblités de victoire puis toutes les possibilités de défaite
+            for colonne in range(7):
+                grille2 = recopier(grille)            #cré un double de la grille
+                ajouter_pion(grille2,colonne,joueur)  #pose un pion dans toutes les colonnes de grille2 puis teste si ce pion permet de gagner ou évite de perdre
+                if test_victoire(grille2,colonne) is True:   #si un pion posé dans colonne peut faire gagner l'IA ou le joueur alors l'IA joue dans cette colonne
+                    return colonne
+
+    #sinon joue au hazard (ne joue aux extrémités que si ce sont les seules colonnes non remplies)
     remplie = True
-    while remplie == True:
-        n = randint(0,6)
-        if grille[0][n] == " ":
+    tour = 0
+    while remplie == True: #permet de ne pas renvoyer de numéro de colonne remplie
+        if tour <= 100:    #ne joue pas aux extrémités
+            colonne = randint(1,5)
+        else:              #joue aux extrémité si toutes les colonnes testées en 100 essais sont remplies
+            colonne = randint(0,6)
+        if grille[0][colonne] == " ":
             remplie = False
-    return n
+        tour = tour + 1
+    return colonne
 
 
 
