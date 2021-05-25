@@ -1,0 +1,108 @@
+"""
+
+Maison: chemins: -BoisDesLutins
+                 -Prairie
+        Parler avec: Palourde
+
+BoisDesLutins: chemins: -Maison
+                        -AcadémieDesBots
+               objets: -Panneau
+                       -RentreChezToi
+
+AcadémieDesBots: chemins: -BoisDesLutins
+                          -Cours
+                          -SalleDEntrainement
+                          
+Cours: chemins: -AcadémieDesBots
+       Parler avec: -Professeur
+       
+SalleDEntrainement: chemins: -AcadémieDesBots
+                             -Boîte
+                    objets: -Note
+                            -Pilier1
+                            -Pilier2
+                            -Pilier3
+
+Prairie: chemins: -Maison
+                  -Montagne
+         Parler avec: Poney
+         
+Montagne: chemins: -Prairie
+                   -Cave
+          Parler avec: Vieil Homme
+          objet: Manuscrit
+          
+Cave: chemins: -Montagne
+               -SombreCorridor
+               
+SombreCorridor: chemins: -Cave
+                         -Cellier
+                         
+Cellier: chemins: -SombreCorridor
+                  -PetitRenfoncement
+                  -Tunnel
+         objets: Rocher
+         
+PetitRenfoncement: chemins: -Cellier
+
+Tunnel: chemins: -Cellier
+                 -ChambreDePierre
+        Parler avec: -Rat
+        
+ChambreDePierre: chemins: -Tunnel
+                          -Portail
+                          
+Portail: chemins: -ChambreDePierre
+                  -PlaceDuVillage
+    
+PlaceDuVillage: chemins: -Portail
+                         -PlaceDuMarché
+                         -Bibliothèque
+                         -CheminEnPierres
+                         -BoutiqueArtisanale
+                         -PondCassé
+                Parler avec: -Jasper
+                             -VieilHomme
+                             -VillageoiseEnPleurs
+                             
+PlaceDuMarché: chemins: -PlaceDuVillage
+               Parler avec: -Vendeur
+               objets: -sacADos    (je ne sais pas comment faire les A majuscules avec accent)
+                       -rm
+                       -mkdir
+                       
+Bibliothèque: chemins: -PlaceDuVillage
+                       -PièceSecrète
+              objets: -IntrigantLevier
+                      -HistoireDeTerminus
+                      -NostalgieDuPays
+                      -RomanceDePoche
+                      -ToutSurLesSorts
+                      -SuperLivreDesSortilèges
+                      -VIMproved
+                      
+PièceSecrète: chemins: -Bibliothèque
+              Parler avec: -Grep
+                           -Bibliothécaire
+                           
+CheminEnPierres: chemins: -PlaceDuVillage
+                 objets: -EnormeRocher    (je n'ai pas réussi à intéragire avec car je ne sais pas comment faire les E majuscules avec accent)
+                 
+BoutiqueArtisanale: chemins: -PlaceDuVillage
+                    Parler avec: -Artisane
+                    objets: -BabiolleEtrange  (même problème)  
+                            -Dragon
+                            
+PondCassé: chemins: -PlaceDuVillage
+                    -Clairière
+
+Clairière: chemins: -PondCassé
+                    -CheminInquiétant
+           Parler avec: HommeEnPleurs
+           
+CheminInquiétant: chemins: -Clairière
+                  objets: -RoncesTordues
+                  
+                  
+Je n'ai pas réussi à aller plus loin
+"""
