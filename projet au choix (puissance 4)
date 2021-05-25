@@ -1,4 +1,5 @@
 #BULET Aimé puissance 4
+#petit probleme que je n'arrive pas à résoudre: si un joueur attend trop longtemps avant de joueur, il y a un message d'erreur lorsqu'il joue
 
 from time import sleep
 from random import randint
@@ -16,13 +17,14 @@ def creer_grille():
 
 
 def afficher_grille(grille):
-#affiche la grille de puissance 4 de manière lisible (une liste par ligne)
-#attention, la liste 0 est la liste affichée en dernier et donc la ligne la plus haute de la grille      grille[0] ->  [" "," "," "," "," "," "," "]
-    for n in range(6):        #                                                                                        [" "," "," "," "," "," "," "]
-        print(grille[n])      #affiche les lignes les unes après les autres                                            [" "," "," "," "," "," "," "]
-    print(" ")                #                                                                                        [" "," "," "," "," "," "," "]
-                              #                                                                                        [" "," "," "," "," "," "," "]
-                              #                                                                          grille[5] ->  [" "," "," "," "," "," "," "]
+#affiche la grille de puissance 4 de manière lisible
+    print("_________________") #montre le début de la grille
+    for ligne in range(6):
+    #affiche tous les éléments de chaques listes
+    #attention, grille[0] est la ligne la plus haute de la grille
+        print("[",grille[ligne][0],grille[ligne][1],grille[ligne][2],grille[ligne][3],grille[ligne][4],grille[ligne][5],grille[ligne][6],"]") #les [ et ] montrent les cotés de la grille
+    print("_________________") #montre la fin de la grille
+    print(" ")
 
 
 def ajouter_pion(grille,colonne,joueur):
@@ -73,14 +75,14 @@ def IA(grille):
     #sinon teste si elle peut gagner en 1 coup puis si elle peut perdre en 1 coup
         for joueur in range(2,0,-1):                  #boucle qui permet de tester toutes les possiblités de victoire puis toutes les possibilités de défaite
             for colonne in range(7):
-                grille2 = recopier(grille)            #cré un double de la grille
-                ajouter_pion(grille2,colonne,joueur)  #pose un pion dans toutes les colonnes de grille2 puis teste si ce pion permet de gagner ou évite de perdre
+                grille2 = recopier(grille)                   #cré un double de la grille
+                ajouter_pion(grille2,colonne,joueur)         #pose un pion dans toutes les colonnes de grille2 puis teste si ce pion permet de gagner ou évite de perdre
                 if test_victoire(grille2,colonne) is True:   #si un pion posé dans colonne peut faire gagner l'IA ou le joueur alors l'IA joue dans cette colonne
                     return colonne
 
     #sinon joue au hazard (ne joue aux extrémités que si ce sont les seules colonnes non remplies)
     remplie = True
-    tour = 0
+    tour = 0               #variable qui compte le nombre de test de colonne remplie
     while remplie == True: #permet de ne pas renvoyer de numéro de colonne remplie
         if tour <= 100:    #ne joue pas aux extrémités
             colonne = randint(1,5)
@@ -295,7 +297,7 @@ def jouer():
         victoire = test_victoire(grille,colonne)         #regarde si personne n'a gagné à chaque tour
         joueur = joueur % 2 + 1                          #le numéro passe de 1 à 2 ou de 2 à 1
         afficher_grille(grille)                          #affiche la grille pour montré l'avanceùent de la partie
-        sleep(1)                                         #attend 1 seconde pour qu'il y ai un petit temps entre chaques tours
+        sleep((1))                                       #attend 1 seconde pour qu'il y ai un petit temps entre chaques tours
 
     #quand la partie est finie
     if mode == 1:
